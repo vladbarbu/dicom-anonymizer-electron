@@ -9,6 +9,7 @@ i18n.use(initReactI18next).init({
                 file_button: "Single/Multiple Files",
                 directory_button: "Whole directory",
                 settings_button: "Settings",
+                settings_title: "Anonymize settings",
             },
         },
         ro: {
@@ -16,6 +17,7 @@ i18n.use(initReactI18next).init({
                 file_button: "Fișiere unice/multiple",
                 directory_button: "Întregul director",
                 settings_button: "Setări",
+                settings_title: "Setări anonimizare",
             },
         },
     },
