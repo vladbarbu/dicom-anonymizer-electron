@@ -6,14 +6,16 @@ i18n.use(initReactI18next).init({
     resources: {
         en: {
             translation: {
-                title: "Home Page",
-                description: "This is an example of translation in en",
+                file_button: "Single/Multiple Files",
+                directory_button: "Whole directory",
+                settings_button: "Settings",
             },
         },
-        "pt-BR": {
+        ro: {
             translation: {
-                title: "Página Inicial",
-                description: "Este é um exemplo de tradução em pt_BR",
+                file_button: "Fișiere unice/multiple",
+                directory_button: "Întregul director",
+                settings_button: "Setări",
             },
         },
     },
