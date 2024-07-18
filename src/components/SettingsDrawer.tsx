@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import LangToggle from "@/components/LangToggle";
 
 interface SettingsDrawerProps {
     selectedPage: string;
@@ -36,13 +37,17 @@ export default function SettingsDrawer({ selectedPage, setSelectedPage }: Settin
             <DrawerContent>
                 <DrawerHeader>
                     <DrawerTitle>{t("settings_title")}</DrawerTitle>
-                    <DrawerDescription>This action cannot be undone.</DrawerDescription>
+                    {/* <DrawerDescription>This action cannot be undone.</DrawerDescription> */}
                 </DrawerHeader>
                 <DrawerFooter>
-                    <Button>Submit</Button>
+                    <div className="flex flex-row items-center gap-4">
+                        <div>{t("settings_language")}</div>
+                        <LangToggle />
+                    </div>
+                    {/* <Button>Submit</Button>
                     <DrawerClose>
                         <Button variant="outline">Cancel</Button>
-                    </DrawerClose>
+                    </DrawerClose>  */}
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>
