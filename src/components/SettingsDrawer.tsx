@@ -25,11 +25,7 @@ export default function SettingsDrawer({ selectedPage, setSelectedPage }: Settin
     return (
         <Drawer>
             <DrawerTrigger asChild>
-                <Button
-                    variant={selectedPage === "settings" ? "secondary" : "outline"}
-                    size="xl"
-                    onClick={() => setSelectedPage("settings")}
-                >
+                <Button variant={selectedPage === "settings" ? "secondary" : "outline"} size="xl">
                     <Settings className="mr-2 h-4 w-4" />
                     {t("settings_button")}
                 </Button>
