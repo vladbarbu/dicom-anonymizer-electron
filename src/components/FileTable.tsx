@@ -14,7 +14,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useState } from "react"; // Add useEffect and useState import
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -288,6 +288,11 @@ export default function FileTable() {
             columnFilters,
             columnVisibility,
             rowSelection,
+        },
+        initialState: {
+            pagination: {
+                pageSize: 10,
+            },
         },
     });
 
