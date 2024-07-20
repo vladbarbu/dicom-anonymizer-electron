@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import registerListeners from "./helpers/ipc/listeners-register";
 import path from "path";
 
@@ -55,3 +55,10 @@ app.on("activate", () => {
     }
 });
 //osX only ends
+
+ipcMain.handle("open-directory-picker", async () => {
+    const result = await dialog.showOpenDialog({
+        properties: ["openDirectory"],
+    });
+    return result.filePaths[0];
+});
