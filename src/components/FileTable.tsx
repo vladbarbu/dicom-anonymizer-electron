@@ -14,6 +14,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -60,6 +61,108 @@ const data: Payment[] = [
         amount: 874,
         status: "success",
         email: "Silas22@gmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
+    },
+    {
+        id: "bhqecj4p",
+        amount: 721,
+        status: "failed",
+        email: "carmella@hotmail.com",
     },
     {
         id: "bhqecj4p",
@@ -287,6 +390,9 @@ export default function FileTable() {
                     >
                         Previous
                     </Button>
+                    <span className="text-sm">
+                        Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+                    </span>
                     <Button
                         variant="outline"
                         size="sm"

@@ -16,11 +16,11 @@ export default function SingleFilePage() {
 
     return (
         <div
-            className={`relative  flex  h-full w-full flex-col rounded-xl border-4 ${selectedFiles.length > 0 ? "border-solid bg-secondary" : "border-dashed"} border-secondary p-4 lg:col-span-2`}
+            className={`relative  flex   w-full flex-col rounded-xl border-4 ${selectedFiles.length > 0 ? "h-fit border-solid bg-secondary/60" : "h-full border-dashed"} border-secondary p-4  lg:col-span-2`}
         >
             {selectedFiles.length > 0 ? (
                 <div>
-                    <FileTable selectedFiles={selectedFiles} />
+                    <FileTable />
                 </div>
             ) : (
                 <div
