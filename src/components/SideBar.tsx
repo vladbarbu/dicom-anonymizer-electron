@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Settings, Files, FolderPlus } from "lucide-react";
+import { Files, Folder } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import SettingsDrawer from "./SettingsDrawer";
 
@@ -29,7 +29,7 @@ export default function SideBar({ selectedPage, setSelectedPage }: SideBarProps)
                     className="flex flex-col items-center gap-4"
                     onClick={() => setSelectedPage("directory")}
                 >
-                    <FolderPlus className="mr-2 h-4 w-4" /> {t("directory_button")}
+                    <Folder className="mr-2 h-4 w-4" /> {t("directory_button")}
                 </Button>
             </div>
             <div className="flex w-full flex-col">

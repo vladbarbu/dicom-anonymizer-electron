@@ -12,4 +12,8 @@ contextBridge.exposeInMainWorld("electron", {
         const directory = await ipcRenderer.invoke("open-directory-picker");
         return directory;
     },
+    openFilePicker: async (restrictExtensions: boolean) => {
+        const files = await ipcRenderer.invoke("open-file-picker", restrictExtensions);
+        return files;
+    },
 });

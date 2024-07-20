@@ -12,8 +12,13 @@ i18n.use(initReactI18next).init({
                 directory_button: "Whole directory",
                 settings: {
                     button: "Settings",
-                    title: "Anonymization settings",
+                    title: "App settings",
+                    language_section_title: "Language settings",
                     language: "Select the language of the interface:",
+                    output_section_title: "Output directory settings",
+                    output_section_button: "Select output directory",
+                    output_default_text: "No output directory selected",
+                    checbox_section_title: "Anonymization options",
                     open_checkbox_options: [
                         "Institution Name",
                         "Performing Physician's Name",
@@ -36,8 +41,13 @@ i18n.use(initReactI18next).init({
                 directory_button: "Întregul director",
                 settings: {
                     button: "Setări",
-                    title: "Setări anonimizare",
+                    title: "Setări aplicație",
                     language: "Selectează limba interfeței:",
+                    language_section_title: "Setări limbă",
+                    output_section_title: "Setări director de salvare",
+                    output_section_button: "Selectează directorul ",
+                    output_default_text: "Nu a fost selectat niciun director de salvare",
+                    checbox_section_title: "Opțiuni de anonimizare",
                     open_checkbox_options: [
                         "Nume instituție",
                         "Nume medic care a efectuat studiul",

@@ -11,16 +11,16 @@ export function FlipWordsDemo() {
 
     return (
         <div className="flex w-full flex-col items-center justify-center px-4">
-            <h1 className="xl:text- 7xl relative z-20 mx-auto text-center text-3xl font-bold text-neutral-500 dark:text-neutral-400 md:text-5xl xl:text-6xl">
+            <h1 className=" relative z-20 mx-auto text-center text-3xl font-bold text-neutral-500 dark:text-neutral-400 md:text-5xl xl:text-6xl">
                 {title}
                 <FlipWords words={words} /> <br />
                 {subtitle}
             </h1>
             <div className="relative h-40 w-full">
-                <div className="absolute inset-x-20 top-0 h-[2px] w-3/4 bg-gradient-to-r from-transparent via-indigo-500 to-transparent blur-sm" />
-                <div className="absolute inset-x-20 top-0 h-px w-3/4 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-                <div className="absolute inset-x-96 top-0 h-[5px] w-1/4 bg-gradient-to-r from-transparent via-sky-500 to-transparent blur-sm" />
-                <div className="absolute inset-x-96 top-0 h-px w-1/4 bg-gradient-to-r from-transparent via-sky-500 to-transparent" />
+                <div className="absolute left-1/2 top-0 h-[2px] w-3/4 -translate-x-1/2 transform bg-gradient-to-r from-transparent via-indigo-500 to-transparent blur-sm" />
+                <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 transform bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+                <div className="absolute left-1/2 top-0 h-[5px] w-1/4 -translate-x-1/2 transform bg-gradient-to-r from-transparent via-sky-500 to-transparent blur-sm" />
+                <div className="absolute left-1/2 top-0 h-px w-1/4 -translate-x-1/2 transform bg-gradient-to-r from-transparent via-sky-500 to-transparent" />
 
                 <SparklesCore
                     background="transparent"

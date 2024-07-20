@@ -62,3 +62,16 @@ ipcMain.handle("open-directory-picker", async () => {
     });
     return result.filePaths[0];
 });
+
+ipcMain.handle("open-file-picker", async (event, restrictExtensions) => {
+    const options: Electron.OpenDialogOptions = {
+        properties: ["openFile", "multiSelections"],
+    };
+
+    if (restrictExtensions) {
+        options.filters = [{ name: "Medical", extensions: ["dcm", "mha"] }];
+    }
+
+    const result = await dialog.showOpenDialog(options);
+    return result.filePaths;
+});
