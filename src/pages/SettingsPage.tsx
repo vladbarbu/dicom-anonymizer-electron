@@ -7,8 +7,9 @@ export default function SettingsPage() {
 
     return (
         <div className="light:bg-neutral-200 relative  flex  w-full flex-col rounded-xl bg-muted/100 p-4 lg:col-span-2">
-            <h1 className="text-4xl font-bold">{t("settings_button")}</h1>
+            <h1 className="text-4xl font-bold">{t("settings.button")}</h1>
             <LangToggle />
+            <h1 className="text-4xl font-bold">{t("settings.button")}</h1>
         </div>
     );
 }

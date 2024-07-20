@@ -8,7 +8,6 @@ export default function SingleFilePage() {
     return (
         <div className="light:bg-neutral-200 relative  flex  w-full flex-col rounded-xl bg-muted/100 p-4 lg:col-span-2">
             <h1 className="text-4xl font-bold">{t("file_button")}</h1>
-            <LangToggle />
         </div>
     );
 }

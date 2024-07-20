@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import registerListeners from "./helpers/ipc/listeners-register";
 import path from "path";
 
@@ -11,8 +11,10 @@ if (require("electron-squirrel-startup")) {
 function createWindow() {
     const preload = path.join(__dirname, "preload.js");
     const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1400,
+        height: 1000,
+        minWidth: 800,
+        minHeight: 600,
         webPreferences: {
             devTools: inDevelopment,
             contextIsolation: true,
@@ -24,6 +26,10 @@ function createWindow() {
         titleBarStyle: "hidden",
     });
     registerListeners(mainWindow);
+
+    if (inDevelopment) {
+        mainWindow.webContents.openDevTools();
+    }
 
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
         mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
@@ -49,3 +55,10 @@ app.on("activate", () => {
     }
 });
 //osX only ends
+
+ipcMain.handle("open-directory-picker", async () => {
+    const result = await dialog.showOpenDialog({
+        properties: ["openDirectory"],
+    });
+    return result.filePaths[0];
+});
