@@ -141,7 +141,7 @@ export default function FileTable({
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const [data, setData] = useState<FileDict[]>(selectedFiles);
-
+    console.log("Index", pageIndex);
     const columns = getColumns(data, (id: number) => {
         setData((prevData) => prevData.filter((file) => file.id !== id));
         handleDeleteRow(id);
@@ -171,8 +171,17 @@ export default function FileTable({
         onPaginationChange: (updater) => {
             const newState =
                 typeof updater === "function" ? updater(table.getState().pagination) : updater;
-
-            handlePageChange(newState.pageIndex);
+            console.log(table.getState());
+            if (newState.pageIndex === 0 && table.getState().pagination.pageIndex !== 0) {
+                console.log(table.getState().pagination.pageIndex, table.getPageCount());
+                if (table.getState().pagination.pageIndex + 1 > table.getPageCount()) {
+                    handlePageChange(table.getPageCount() - 1);
+                } else {
+                    handlePageChange(table.getState().pagination.pageIndex);
+                }
+            } else {
+                handlePageChange(newState.pageIndex);
+            }
         },
     });
 
