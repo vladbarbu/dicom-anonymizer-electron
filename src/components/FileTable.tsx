@@ -171,9 +171,12 @@ export default function FileTable({
         onPaginationChange: (updater) => {
             const newState =
                 typeof updater === "function" ? updater(table.getState().pagination) : updater;
-            console.log(table.getState());
-            if (newState.pageIndex === 0 && table.getState().pagination.pageIndex !== 0) {
-                console.log(table.getState().pagination.pageIndex, table.getPageCount());
+
+            if (newState.pageIndex === 0 && table.getState().pagination.pageIndex === 1) {
+                handlePageChange(newState.pageIndex);
+            }
+
+            if (newState.pageIndex === 0 && table.getState().pagination.pageIndex > 1) {
                 if (table.getState().pagination.pageIndex + 1 > table.getPageCount()) {
                     handlePageChange(table.getPageCount() - 1);
                 } else {
