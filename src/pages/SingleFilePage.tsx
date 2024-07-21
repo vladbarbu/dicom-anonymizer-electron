@@ -7,7 +7,7 @@ import FileTable from "../components/FileTable";
 export default function SingleFilePage() {
     const { t } = useTranslation();
     interface FileDict {
-        id: string;
+        id: number;
         status: "not anonymized" | "anonymized";
         root_path: string;
         file_name: string;
@@ -15,6 +15,12 @@ export default function SingleFilePage() {
 
     const [selectedFiles, setSelectedFiles] = useState<FileDict[]>([]);
     const [restrictExtensions, setRestrictExtensions] = useState<boolean>(false);
+    const [pageIndex, setPageIndex] = useState(0);
+
+    const handlePageChange = (newPageIndex: number) => {
+        console.log("New page index:", newPageIndex);
+        setPageIndex(newPageIndex);
+    };
 
     const preprocessFiles = (files: string[]): FileDict[] | undefined => {
         if (files.length === 0) {
@@ -33,6 +39,11 @@ export default function SingleFilePage() {
         });
 
         return processedFiles;
+    };
+
+    const handleDeleteRow = (id: number) => {
+        const updatedFiles = selectedFiles.filter((file) => file.id !== id);
+        setSelectedFiles(updatedFiles);
     };
 
     const parsePath = (filePath: string) => {
@@ -58,7 +69,12 @@ export default function SingleFilePage() {
         >
             {selectedFiles.length > 0 ? (
                 <div>
-                    <FileTable selectedFiles={selectedFiles} />
+                    <FileTable
+                        selectedFiles={selectedFiles}
+                        handleDeleteRow={handleDeleteRow}
+                        pageIndex={pageIndex}
+                        handlePageChange={handlePageChange}
+                    />
                 </div>
             ) : (
                 <div

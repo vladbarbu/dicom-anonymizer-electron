@@ -38,14 +38,13 @@ import {
 } from "@/components/ui/table";
 
 export type FileDict = {
-    id: string;
+    id: number;
     status: "not anonymized" | "anonymized";
     root_path: string;
     file_name: string;
 };
 
-export const getColumns = (selectedFiles: FileDict[]) => {
-    const table = selectedFiles;
+export const getColumns = (selectedFiles: FileDict[], handleDeleteRow: (id: number) => void) => {
     const columns: ColumnDef<FileDict>[] = [
         {
             id: "select",
@@ -69,7 +68,6 @@ export const getColumns = (selectedFiles: FileDict[]) => {
             enableSorting: false,
             enableHiding: false,
         },
-
         {
             accessorKey: "status",
             header: "Status",
@@ -104,8 +102,6 @@ export const getColumns = (selectedFiles: FileDict[]) => {
             id: "actions",
             enableHiding: false,
             cell: ({ row }) => {
-                const payment = row.original;
-
                 return (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -116,10 +112,9 @@ export const getColumns = (selectedFiles: FileDict[]) => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>Remove file</DropdownMenuItem>
-                            {/* <DropdownMenuSeparator />
-                            <DropdownMenuItem>View customer</DropdownMenuItem>
-                            <DropdownMenuItem>View payment details</DropdownMenuItem> */}
+                            <DropdownMenuItem onClick={() => handleDeleteRow(row.original.id)}>
+                                Remove file
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 );
@@ -130,15 +125,30 @@ export const getColumns = (selectedFiles: FileDict[]) => {
     return columns;
 };
 
-export default function FileTable({ selectedFiles = [] }: { selectedFiles: FileDict[] }) {
+export default function FileTable({
+    selectedFiles = [],
+    handleDeleteRow,
+    pageIndex,
+    handlePageChange,
+}: {
+    selectedFiles: FileDict[];
+    handleDeleteRow: (id: number) => void;
+    pageIndex: number;
+    handlePageChange: (pageIndex: number) => void;
+}) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
-    const columns = getColumns(selectedFiles);
+    const [data, setData] = useState<FileDict[]>(selectedFiles);
+
+    const columns = getColumns(data, (id: number) => {
+        setData((prevData) => prevData.filter((file) => file.id !== id));
+        handleDeleteRow(id);
+    });
 
     const table = useReactTable({
-        data: selectedFiles,
+        data,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -153,11 +163,16 @@ export default function FileTable({ selectedFiles = [] }: { selectedFiles: FileD
             columnFilters,
             columnVisibility,
             rowSelection,
-        },
-        initialState: {
             pagination: {
+                pageIndex,
                 pageSize: 10,
             },
+        },
+        onPaginationChange: (updater) => {
+            const newState =
+                typeof updater === "function" ? updater(table.getState().pagination) : updater;
+
+            handlePageChange(newState.pageIndex);
         },
     });
 
