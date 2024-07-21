@@ -3,15 +3,53 @@ import { useTranslation } from "react-i18next";
 import LangToggle from "@/components/LangToggle";
 import { FilePlus } from "lucide-react";
 import FileTable from "../components/FileTable";
+
 export default function SingleFilePage() {
     const { t } = useTranslation();
-    const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
+    interface FileDict {
+        id: string;
+        status: "not anonymized" | "anonymized";
+        root_path: string;
+        file_name: string;
+    }
+
+    const [selectedFiles, setSelectedFiles] = useState<FileDict[]>([]);
     const [restrictExtensions, setRestrictExtensions] = useState<boolean>(false);
+
+    const preprocessFiles = (files: string[]): FileDict[] | undefined => {
+        if (files.length === 0) {
+            alert(t("no_files_selected"));
+            return;
+        }
+
+        const processedFiles = files.map((file, index) => {
+            const parsedPath = parsePath(file);
+            return {
+                id: index,
+                status: "not anonymized" as const,
+                root_path: parsedPath.dir,
+                file_name: parsedPath.base,
+            };
+        });
+
+        return processedFiles;
+    };
+
+    const parsePath = (filePath: string) => {
+        const isWindows = filePath.includes("\\");
+        const separator = isWindows ? "\\" : "/";
+        const parts = filePath.split(separator);
+        const base = parts.pop() || "";
+        const dir = parts.join(separator);
+        return { dir, base };
+    };
 
     const handleFilePicker = async () => {
         const files = await window.electron.openFilePicker(restrictExtensions);
-        setSelectedFiles(files);
-        console.log(files);
+        const processedFiles = preprocessFiles(files);
+        if (processedFiles) {
+            setSelectedFiles(processedFiles);
+        }
     };
 
     return (
@@ -20,7 +58,7 @@ export default function SingleFilePage() {
         >
             {selectedFiles.length > 0 ? (
                 <div>
-                    <FileTable />
+                    <FileTable selectedFiles={selectedFiles} />
                 </div>
             ) : (
                 <div
