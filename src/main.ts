@@ -20,7 +20,6 @@ function createWindow() {
             contextIsolation: true,
             nodeIntegration: true,
             nodeIntegrationInSubFrames: false,
-
             preload: preload,
         },
         titleBarStyle: "hidden",

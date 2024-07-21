@@ -18,7 +18,6 @@ export default function SingleFilePage() {
     const [pageIndex, setPageIndex] = useState(0);
 
     const handlePageChange = (newPageIndex: number) => {
-        console.log("New page index:", newPageIndex);
         setPageIndex(newPageIndex);
     };
 

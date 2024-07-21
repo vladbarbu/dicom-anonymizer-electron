@@ -37,6 +37,8 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
+import { getDicomTags } from "./dicom/main";
+
 export type FileDict = {
     id: number;
     status: "not anonymized" | "anonymized";
@@ -114,6 +116,13 @@ export const getColumns = (selectedFiles: FileDict[], handleDeleteRow: (id: numb
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuItem onClick={() => handleDeleteRow(row.original.id)}>
                                 Remove file
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    getDicomTags(row.original.root_path, row.original.file_name)
+                                }
+                            >
+                                Open file details
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
