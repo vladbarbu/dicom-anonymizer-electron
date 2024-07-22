@@ -13,68 +13,68 @@ export const getDicomTags = async (filePath: string, fileName: string) => {
         const dataSet = dicomParser.parseDicom(byteArray);
 
         const sections: { [key: string]: { [key: string]: string } } = {
-            "Patient Information": {
-                x00100010: "Patient Name",
-                x00100020: "Patient ID",
-                x00100030: "Patient Birth Date",
-                x00100040: "Patient Sex",
+            PatientInformation: {
+                x00100010: "PatientName",
+                x00100020: "PatientID",
+                x00100030: "PatientBirthDate",
+                x00100040: "PatientSex",
             },
-            "Study Information": {
-                x00081030: "Study Description",
-                x00181030: "Protocol Name",
-                x00080050: "Accession #",
-                x00200010: "Study Id",
-                x00080020: "Study Date",
-                x00080030: "Study Time",
+            StudyInformation: {
+                x00081030: "StudyDescription",
+                x00181030: "ProtocolName",
+                x00080050: "AccessionNumber",
+                x00200010: "StudyId",
+                x00080020: "StudyDate",
+                x00080030: "StudyTime",
             },
-            "Series Information": {
-                x0008103e: "Series Description",
-                x00200011: "Series #",
+            SeriesInformation: {
+                x0008103e: "SeriesDescription",
+                x00200011: "SeriesNumber",
                 x00080060: "Modality",
-                x00180015: "Body Part",
-                x00080021: "Series Date",
-                x00080031: "Series Time",
+                x00180015: "BodyPart",
+                x00080021: "SeriesDate",
+                x00080031: "SeriesTime",
             },
-            "Instance Information": {
-                x00200013: "Instance #",
-                x00200012: "Acquisition #",
-                x00080022: "Acquisition Date",
-                x00080032: "Acquisition Time",
-                x00080023: "Content Date",
-                x00080033: "Content Time",
+            InstanceInformation: {
+                x00200013: "InstanceNumber",
+                x00200012: "AcquisitionNumber",
+                x00080022: "AcquisitionDate",
+                x00080032: "AcquisitionTime",
+                x00080023: "ContentDate",
+                x00080033: "ContentTime",
             },
-            "Image Information": {
+            ImageInformation: {
                 x00280010: "Rows",
                 x00280011: "Columns",
-                x00280004: "Photometric Interpretation",
-                x00080008: "Image Type",
-                x00280100: "Bits Allocated",
-                x00280101: "Bits Stored",
+                x00280004: "PhotometricInterpretation",
+                x00080008: "ImageType",
+                x00280100: "BitsAllocated",
+                x00280101: "BitsStored",
                 x00280102: "HighBit",
-                x00280103: "Pixel Representation",
-                x00281053: "Rescale Slope",
-                x00281052: "Rescale Intercept",
-                x00200032: "Image Position Patient",
-                x00200037: "Image Orientation Patient",
-                x00280030: "Pixel Spacing",
-                x00280002: "Samples Per Pixel",
+                x00280103: "PixelRepresentation",
+                x00281053: "RescaleSlope",
+                x00281052: "RescaleIntercept",
+                x00200032: "ImagePositionPatient",
+                x00200037: "ImageOrientationPatient",
+                x00280030: "PixelSpacing",
+                x00280002: "SamplesPerPixel",
             },
-            "Equipment Information": {
+            EquipmentInformation: {
                 x00080070: "Manufacturer",
                 x00081090: "Model",
-                x00081010: "Station Name",
-                x00020016: "AE Title",
-                x00080080: "Institution Name",
-                x00181020: "Software Version",
-                x00020013: "Implementation Version Name",
+                x00081010: "StationName",
+                x00020016: "AETitle",
+                x00080080: "InstitutionName",
+                x00181020: "SoftwareVersion",
+                x00020013: "ImplementationVersionName",
             },
             UIDS: {
-                x0020000d: "Study UID",
-                x0020000e: "Series UID",
-                x00080018: "Instance UID",
-                x00080016: "SOP Class UID",
-                x00020010: "Transfer Syntax UID",
-                x00200052: "Frame of Reference UID",
+                x0020000d: "StudyUID",
+                x0020000e: "SeriesUID",
+                x00080018: "InstanceUID",
+                x00080016: "SOPClassUID",
+                x00020010: "TransferSyntaxUID",
+                x00200052: "FrameofReferenceUID",
             },
         };
 
@@ -93,7 +93,6 @@ export const getDicomTags = async (filePath: string, fileName: string) => {
                 }
             }
         }
-        console.log(result);
         return result;
     } catch (error) {
         console.error("Error reading or parsing DICOM file:", error);

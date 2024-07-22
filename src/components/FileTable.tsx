@@ -39,6 +39,9 @@ import {
 
 import { getDicomTags } from "./dicom/main";
 
+import { FileDetailsModal } from "./FileDetailsModal";
+import { set } from "zod";
+
 export type FileDict = {
     id: number;
     status: "not anonymized" | "anonymized";
@@ -46,7 +49,11 @@ export type FileDict = {
     file_name: string;
 };
 
-export const getColumns = (selectedFiles: FileDict[], handleDeleteRow: (id: number) => void) => {
+export const getColumns = (
+    selectedFiles: FileDict[],
+    handleDeleteRow: (id: number) => void,
+    handleShowDetailsModal: (root_path: string, file_path: string) => void
+) => {
     const columns: ColumnDef<FileDict>[] = [
         {
             id: "select",
@@ -119,10 +126,13 @@ export const getColumns = (selectedFiles: FileDict[], handleDeleteRow: (id: numb
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() =>
-                                    getDicomTags(row.original.root_path, row.original.file_name)
+                                    handleShowDetailsModal(
+                                        row.original.root_path,
+                                        row.original.file_name
+                                    )
                                 }
                             >
-                                Open file details
+                                Show file details
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -134,7 +144,7 @@ export const getColumns = (selectedFiles: FileDict[], handleDeleteRow: (id: numb
     return columns;
 };
 
-export default function FileTable({
+export function FileTable({
     selectedFiles = [],
     handleDeleteRow,
     pageIndex,
@@ -145,16 +155,30 @@ export default function FileTable({
     pageIndex: number;
     handlePageChange: (pageIndex: number) => void;
 }) {
+    const [dicomTags, setDicomTags] = useState({});
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const [data, setData] = useState<FileDict[]>(selectedFiles);
-    console.log("Index", pageIndex);
-    const columns = getColumns(data, (id: number) => {
-        setData((prevData) => prevData.filter((file) => file.id !== id));
-        handleDeleteRow(id);
-    });
+
+    async function handleShowDetailsModal(root_path: string, file_name: string) {
+        const results = await getDicomTags(root_path, file_name);
+        setDicomTags(results);
+    }
+
+    function handleOnCLoseModal() {
+        setDicomTags({});
+    }
+
+    const columns = getColumns(
+        data,
+        (id: number) => {
+            setData((prevData) => prevData.filter((file) => file.id !== id));
+            handleDeleteRow(id);
+        },
+        handleShowDetailsModal
+    );
 
     const table = useReactTable({
         data,
@@ -309,6 +333,9 @@ export default function FileTable({
                     </Button>
                 </div>
             </div>
+            {Object.keys(dicomTags).length > 0 && (
+                <FileDetailsModal dicomTags={dicomTags} handleOnCLoseModal={handleOnCLoseModal} />
+            )}
         </div>
     );
 }
