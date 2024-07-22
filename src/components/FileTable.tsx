@@ -44,7 +44,7 @@ import { set } from "zod";
 
 export type FileDict = {
     id: number;
-    status: "not anonymized" | "anonymized";
+    status: "not anonymized" | "anonymized 🛡️" | "Loading";
     root_path: string;
     file_name: string;
 };
@@ -171,6 +171,48 @@ export function FileTable({
         setDicomTags({});
     }
 
+    async function handleAnonymize() {
+        const updatedData = data.map((file) => {
+            if (
+                table
+                    .getFilteredSelectedRowModel()
+                    .rows.some(
+                        (row) => row.original.id === file.id && file.status !== "anonymized 🛡️"
+                    )
+            ) {
+                return {
+                    ...file,
+                    status: "Loading" as const,
+                };
+            }
+            return file;
+        });
+
+        setData(updatedData);
+
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        for (let i = 0; i < updatedData.length; i++) {
+            const file = updatedData[i];
+            if (file.status === "Loading") {
+                const updatedFile = {
+                    ...file,
+                    status: "anonymized 🛡️" as const,
+                };
+
+                const newData = [
+                    ...updatedData.slice(0, i),
+                    updatedFile,
+                    ...updatedData.slice(i + 1),
+                ];
+
+                setData(newData);
+                updatedData[i] = updatedFile;
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+            }
+        }
+    }
+
     const columns = getColumns(
         data,
         (id: number) => {
@@ -232,6 +274,9 @@ export function FileTable({
                     }
                     className="max-w-sm"
                 />
+                <Button variant="outline" size="sm" onClick={() => handleAnonymize()}>
+                    Anonymize the selected files
+                </Button>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
@@ -306,11 +351,13 @@ export function FileTable({
                     </TableBody>
                 </Table>
             </div>
+
             <div className="flex items-center justify-end space-x-2 py-4">
                 <div className="flex-1 text-sm text-muted-foreground">
                     {table.getFilteredSelectedRowModel().rows.length} of{" "}
                     {table.getFilteredRowModel().rows.length} row(s) selected.
                 </div>
+
                 <div className="space-x-2">
                     <Button
                         variant="outline"
