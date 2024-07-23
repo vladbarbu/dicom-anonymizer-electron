@@ -37,7 +37,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import { getDicomTags } from "./dicom/main";
+import { getDicomTags, anonymizeDicom } from "./dicom/main";
 
 import { FileDetailsModal } from "./FileDetailsModal";
 import { set } from "zod";
@@ -145,12 +145,12 @@ export const getColumns = (
 };
 
 export function FileTable({
-    selectedFiles = [],
+    selectedFiles,
     handleDeleteRow,
     pageIndex,
     handlePageChange,
 }: {
-    selectedFiles: FileDict[];
+    selectedFiles: any;
     handleDeleteRow: (id: number) => void;
     pageIndex: number;
     handlePageChange: (pageIndex: number) => void;
@@ -191,6 +191,7 @@ export function FileTable({
         setData(updatedData);
 
         await new Promise((resolve) => setTimeout(resolve, 2000));
+        const selectedPath = await window.electron.openDirectoryPicker();
 
         for (let i = 0; i < updatedData.length; i++) {
             const file = updatedData[i];
@@ -199,6 +200,8 @@ export function FileTable({
                     ...file,
                     status: "anonymized 🛡️" as const,
                 };
+
+                await anonymizeDicom(file.root_path, file.file_name, selectedPath);
 
                 const newData = [
                     ...updatedData.slice(0, i),

@@ -1,3 +1,4 @@
+import { writeFile } from "fs";
 import { exposeThemeContext } from "./theme/theme-context";
 import { exposeWindowContext } from "./window/window-context";
 import { contextBridge, ipcRenderer } from "electron";
@@ -23,5 +24,6 @@ contextBridge.exposeInMainWorld("electron", {
     },
     fs: {
         readFile: (filePath: string) => fs.readFile(filePath),
+        writeFile: (filePath: string, data: string) => fs.writeFile(filePath, data),
     },
 });

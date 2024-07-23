@@ -11,7 +11,7 @@ export const getDicomTags = async (filePath: string, fileName: string) => {
         const buffer = await fs.readFile(path.join(filePath, fileName));
         const byteArray = new Uint8Array(buffer);
         const dataSet = dicomParser.parseDicom(byteArray);
-
+        console.log("daataset");
         const sections: { [key: string]: { [key: string]: string } } = {
             PatientInformation: {
                 x00100010: "PatientName",
@@ -97,5 +97,28 @@ export const getDicomTags = async (filePath: string, fileName: string) => {
     } catch (error) {
         console.error("Error reading or parsing DICOM file:", error);
         throw error;
+    }
+};
+
+export const anonymizeDicom = async (
+    filePath: string,
+    fileName: string,
+    selectedPath: string
+    // dicomTags: { [key: string]: { [key: string]: string } }
+) => {
+    const fs = window.electron.fs;
+    const path = window.electron.path;
+
+    const buffer = await fs.readFile(path.join(filePath, fileName));
+    const byteArray = new Uint8Array(buffer);
+    const dataSet = dicomParser.parseDicom(byteArray);
+
+    const blob = new Blob([dataSet.byteArray], { type: "application/dicom" });
+    const arrayBuffer = await blob.arrayBuffer();
+    const anonymizedData = new Uint8Array(arrayBuffer);
+
+    if (selectedPath && selectedPath.length > 0) {
+        const outputFilePath = path.join(selectedPath, `anonymized_${fileName}`);
+        await fs.writeFile(outputFilePath, anonymizedData);
     }
 };
