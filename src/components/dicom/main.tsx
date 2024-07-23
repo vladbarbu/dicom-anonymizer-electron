@@ -11,7 +11,7 @@ export const getDicomTags = async (filePath: string, fileName: string) => {
         const buffer = await fs.readFile(path.join(filePath, fileName));
         const byteArray = new Uint8Array(buffer);
         const dataSet = dicomParser.parseDicom(byteArray);
-        console.log("daataset");
+        console.log(dataSet.elements);
         const sections: { [key: string]: { [key: string]: string } } = {
             PatientInformation: {
                 x00100010: "PatientName",
@@ -100,18 +100,44 @@ export const getDicomTags = async (filePath: string, fileName: string) => {
     }
 };
 
-export const anonymizeDicom = async (
-    filePath: string,
-    fileName: string,
-    selectedPath: string
-    // dicomTags: { [key: string]: { [key: string]: string } }
-) => {
+function getRandomString(length: number): string {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
+export const anonymizeDicom = async (filePath: string, fileName: string, selectedPath: string) => {
+    const dicomTags = {
+        x00100010: "PatientName",
+        x00100020: "PatientID",
+        x00100030: "PatientBirthDate",
+        x00100040: "PatientSex",
+    };
     const fs = window.electron.fs;
     const path = window.electron.path;
 
     const buffer = await fs.readFile(path.join(filePath, fileName));
     const byteArray = new Uint8Array(buffer);
     const dataSet = dicomParser.parseDicom(byteArray);
+
+    for (const tag in dicomTags) {
+        if (Object.prototype.hasOwnProperty.call(dicomTags, tag)) {
+            const element = dataSet.elements[tag];
+            const value = dataSet.string(tag);
+            if (value !== undefined) {
+                const newValue = getRandomString(value.length);
+
+                for (let i = 0; i < element.length; i++) {
+                    const char = newValue.length > i ? newValue.charCodeAt(i) : 32;
+                    dataSet.byteArray[element.dataOffset + i] = char;
+                }
+            }
+        }
+    }
 
     const blob = new Blob([dataSet.byteArray], { type: "application/dicom" });
     const arrayBuffer = await blob.arrayBuffer();
