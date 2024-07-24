@@ -1,4 +1,5 @@
 import dicomParser from "dicom-parser";
+import { readJsonFile } from "@/helpers/settings_helpers";
 
 export const getDicomTags = async (filePath: string, fileName: string) => {
     console.log("filePath", filePath);
@@ -111,12 +112,22 @@ function getRandomString(length: number): string {
 }
 
 export const anonymizeDicom = async (filePath: string, fileName: string, selectedPath: string) => {
-    const dicomTags = {
-        x00100010: "PatientName",
-        x00100020: "PatientID",
-        x00100030: "PatientBirthDate",
-        x00100040: "PatientSex",
-    };
+    const jsonContent = await readJsonFile("src/settings.json");
+    const dicomTags: Record<string, string> = {};
+
+    if (jsonContent.anonymize) {
+        for (const [key, value] of Object.entries(jsonContent.anonymize)) {
+            if (
+                typeof value === "object" &&
+                value !== null &&
+                "tag" in value &&
+                typeof value.tag === "string"
+            ) {
+                dicomTags[value.tag] = key;
+            }
+        }
+    }
+
     const fs = window.electron.fs;
     const path = window.electron.path;
 

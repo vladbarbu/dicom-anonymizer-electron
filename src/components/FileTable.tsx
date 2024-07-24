@@ -190,7 +190,7 @@ export function FileTable({
 
         setData(updatedData);
 
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
         const selectedPath = await window.electron.openDirectoryPicker();
 
         for (let i = 0; i < updatedData.length; i++) {
@@ -211,7 +211,7 @@ export function FileTable({
 
                 setData(newData);
                 updatedData[i] = updatedFile;
-                await new Promise((resolve) => setTimeout(resolve, 2000));
+                // await new Promise((resolve) => setTimeout(resolve, 2000));
             }
         }
     }

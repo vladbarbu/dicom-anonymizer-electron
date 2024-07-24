@@ -5,103 +5,120 @@
       "enabled": true,
       "toggleable": false,
       "label": "Patient's Name",
-      "tag": "x00100010"
+      "tag": "x00100010",
+      "tagName": "PatientName"
     },
     "PatientID": {
       "enabled": true,
       "toggleable": false,
       "label": "Patient's ID",
-      "tag": "x00100020"
+      "tag": "x00100020",
+      "tagName": "PatientID"
     },
     "PatientBirthDate": {
       "enabled": true,
       "toggleable": true,
       "label": "Patient's Birth Date",
-      "tag": "x00100030"
+      "tag": "x00100030",
+      "tagName": "PatientBirthDate"
     },
     "PatientSex": {
       "enabled": true,
       "toggleable": true,
       "label": "Patient's Sex",
-      "tag": "x00100040"
+      "tag": "x00100040",
+      "tagName": "PatientSex"
     },
     "StudyDescription": {
       "enabled": true,
       "toggleable": true,
       "label": "Study Description",
-      "tag": "x00081030"
+      "tag": "x00081030",
+      "tagName": "StudyDescription"
     },
     "ProtocolName": {
       "enabled": true,
       "toggleable": true,
       "label": "Protocol Name",
-      "tag": "x00181030"
+      "tag": "x00181030",
+      "tagName": "ProtocolName"
     },
     "AccessionNumber": {
       "enabled": true,
       "toggleable": true,
       "label": "Accession Number",
-      "tag": "x00080050"
+      "tag": "x00080050",
+      "tagName": "AccessionNumber"
     },
     "StudyId": {
       "enabled": true,
       "toggleable": true,
       "label": "Study ID",
-      "tag": "x00200010"
+      "tag": "x00200010",
+      "tagName": "StudyId"
     },
     "StudyDate": {
       "enabled": true,
       "toggleable": true,
       "label": "Study Date",
-      "tag": "x00080020"
+      "tag": "x00080020",
+      "tagName": "StudyDate"
     },
     "StudyTime": {
       "enabled": true,
       "toggleable": true,
       "label": "Study Time",
-      "tag": "x00080030"
+      "tag": "x00080030",
+      "tagName": "StudyTime"
     },
     "AcquisitionDate": {
       "enabled": true,
       "toggleable": true,
       "label": "Acquisition Date",
-      "tag": "x00080022"
+      "tag": "x00080022",
+      "tagName": "AcquisitionDate"
     },
     "AcquisitionTime": {
       "enabled": true,
       "toggleable": true,
       "label": "Acquisition Time",
-      "tag": "x00080032"
+      "tag": "x00080032",
+      "tagName": "AcquisitionTime"
     },
     "ContentDate": {
-      "enabled": false,
+      "enabled": true,
       "toggleable": true,
       "label": "Content Date",
-      "tag": "x00080023"
+      "tag": "x00080023",
+      "tagName": "ContentDate"
     },
     "ContentTime": {
       "enabled": true,
       "toggleable": true,
       "label": "Content Time",
-      "tag": "x00080033"
+      "tag": "x00080033",
+      "tagName": "ContentTime"
     },
     "StationName": {
       "enabled": true,
       "toggleable": true,
       "label": "Station Name",
-      "tag": "x00081010"
+      "tag": "x00081010",
+      "tagName": "StationName"
     },
     "AETitle": {
-      "enabled": false,
+      "enabled": true,
       "toggleable": true,
       "label": "AE Title",
-      "tag": "x00020016"
+      "tag": "x00020016",
+      "tagName": "AETitle"
     },
     "InstitutionName": {
       "enabled": true,
       "toggleable": true,
       "label": "Institution Name",
-      "tag": "x00080080"
+      "tag": "x00080080",
+      "tagName": "InstitutionName"
     }
   },
   "PatientBirthDate": false,
