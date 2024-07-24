@@ -40,7 +40,7 @@ export default function HomePage() {
                         width="128"
                         height="64"
                     />
-                    <div className="h-8">
+                    <div className="h-8" onClick={(e) => e.stopPropagation()}>
                         <ToggleTheme />
                     </div>
                 </div>

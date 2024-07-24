@@ -25,5 +25,7 @@ contextBridge.exposeInMainWorld("electron", {
     fs: {
         readFile: (filePath: string) => fs.readFile(filePath),
         writeFile: (filePath: string, data: string) => fs.writeFile(filePath, data),
+        readFileSync: (filePath: string) => fs.readFileSync(filePath),
+        writeFileSync: (filePath: string, data: string) => fs.writeFileSync(filePath, data),
     },
 });

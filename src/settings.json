@@ -1,0 +1,109 @@
+{
+  "theme": "dark",
+  "anonymize": {
+    "PatientName": {
+      "enabled": true,
+      "toggleable": false,
+      "label": "Patient's Name",
+      "tag": "x00100010"
+    },
+    "PatientID": {
+      "enabled": true,
+      "toggleable": false,
+      "label": "Patient's ID",
+      "tag": "x00100020"
+    },
+    "PatientBirthDate": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Patient's Birth Date",
+      "tag": "x00100030"
+    },
+    "PatientSex": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Patient's Sex",
+      "tag": "x00100040"
+    },
+    "StudyDescription": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Study Description",
+      "tag": "x00081030"
+    },
+    "ProtocolName": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Protocol Name",
+      "tag": "x00181030"
+    },
+    "AccessionNumber": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Accession Number",
+      "tag": "x00080050"
+    },
+    "StudyId": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Study ID",
+      "tag": "x00200010"
+    },
+    "StudyDate": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Study Date",
+      "tag": "x00080020"
+    },
+    "StudyTime": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Study Time",
+      "tag": "x00080030"
+    },
+    "AcquisitionDate": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Acquisition Date",
+      "tag": "x00080022"
+    },
+    "AcquisitionTime": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Acquisition Time",
+      "tag": "x00080032"
+    },
+    "ContentDate": {
+      "enabled": false,
+      "toggleable": true,
+      "label": "Content Date",
+      "tag": "x00080023"
+    },
+    "ContentTime": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Content Time",
+      "tag": "x00080033"
+    },
+    "StationName": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Station Name",
+      "tag": "x00081010"
+    },
+    "AETitle": {
+      "enabled": false,
+      "toggleable": true,
+      "label": "AE Title",
+      "tag": "x00020016"
+    },
+    "InstitutionName": {
+      "enabled": true,
+      "toggleable": true,
+      "label": "Institution Name",
+      "tag": "x00080080"
+    }
+  },
+  "PatientBirthDate": false,
+  "PatientSex": false
+}
