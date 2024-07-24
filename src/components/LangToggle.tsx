@@ -3,7 +3,7 @@ import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import langs from "@/localization/langs";
 import { useTranslation } from "react-i18next";
 import { setAppLanguage } from "@/helpers/language_helpers";
-
+import { modifyJsonFile } from "@/helpers/settings_helpers";
 export default function LangToggle() {
     const { i18n } = useTranslation();
     const currentLang = i18n.language;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Drawer,
     DrawerContent,
@@ -13,26 +13,49 @@ import { Settings } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import LangToggle from "@/components/LangToggle";
 import { Checkbox } from "@/components/ui/checkbox";
-
+import { readJsonFile, modifyJsonFile } from "@/helpers/settings_helpers";
 interface SettingsDrawerProps {
     selectedPage: string;
 }
 
 export default function SettingsDrawer({ selectedPage }: SettingsDrawerProps) {
     const { t } = useTranslation();
-    const openAnonymizationOptions = t("settings.open_checkbox_options", {
-        returnObjects: true,
-    }) as string[];
-    const closedAnonymizationOptions = t("settings.close_checkbox_options", {
-        returnObjects: true,
-    }) as string[];
 
     const [outputDirectory, setOutputDirectory] = useState<string | null>(null);
+    const [anonymizeOptions, setAnonymizeOptions] = useState<any>({});
+    const path = window.electron.path;
+    let json_file_path;
+    const dirname = "src/extraResources";
+
+    if (process.env.NODE_ENV === "development") {
+        json_file_path = path.join(dirname, "settings.json");
+        console.log(process.env.NODE_ENV);
+    } else {
+        json_file_path = path.join("resources/extraResources", "settings.json");
+    }
 
     const handleDirectoryPicker = async () => {
         const directory = await window.electron.openDirectoryPicker();
         setOutputDirectory(directory);
     };
+
+    const getSettingsData = async () => {
+        const settingsData = await readJsonFile(json_file_path);
+        setAnonymizeOptions(settingsData.anonymize);
+    };
+
+    const handleCheckboxChange = async (option: string, checked: boolean) => {
+        const nested_option = "anonymize." + option + ".enabled";
+        await modifyJsonFile(json_file_path, nested_option, !checked);
+        setAnonymizeOptions((prevOptions: any) => ({
+            ...prevOptions,
+            [option]: !checked,
+        }));
+    };
+
+    useEffect(() => {
+        getSettingsData();
+    }, [anonymizeOptions]);
 
     return (
         <Drawer>
@@ -52,7 +75,7 @@ export default function SettingsDrawer({ selectedPage }: SettingsDrawerProps) {
                         <DrawerDescription>{t("settings.language")}</DrawerDescription>
                         <LangToggle />
                     </div>
-                    <div>{t("settings.output_section_title")}</div>
+                    {/* <div>{t("settings.output_section_title")}</div>
                     <div className="flex flex-row items-center gap-4">
                         <Button variant="secondary" onClick={handleDirectoryPicker}>
                             {t("settings.output_section_button")}
@@ -60,20 +83,26 @@ export default function SettingsDrawer({ selectedPage }: SettingsDrawerProps) {
                         <DrawerDescription>
                             {outputDirectory || t("settings.output_default_text")}
                         </DrawerDescription>
-                    </div>
+                    </div> */}
                     <div>{t("settings.checbox_section_title")}</div>
-                    {openAnonymizationOptions.map((option) => (
-                        <div className="flex items-center gap-2" key={option}>
-                            <Checkbox id={option} />
-                            <DrawerDescription>{option}</DrawerDescription>
-                        </div>
-                    ))}
-                    {closedAnonymizationOptions.map((option) => (
-                        <div className="flex items-center gap-2" key={option}>
-                            <Checkbox id={option} disabled checked />
-                            <DrawerDescription>{option}</DrawerDescription>
-                        </div>
-                    ))}
+                    <div className="flex h-40 flex-col flex-wrap gap-2">
+                        {Object.keys(anonymizeOptions).length > 0 &&
+                            Object.entries(anonymizeOptions).map(
+                                ([option, content]: [string, any]) => (
+                                    <div className="flex items-center gap-2" key={option}>
+                                        <Checkbox
+                                            id={content.tag}
+                                            checked={content.enabled}
+                                            disabled={!content.toggleable}
+                                            onClick={() =>
+                                                handleCheckboxChange(option, content.enabled)
+                                            }
+                                        />
+                                        <DrawerDescription>{content.label}</DrawerDescription>
+                                    </div>
+                                )
+                            )}
+                    </div>
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>
