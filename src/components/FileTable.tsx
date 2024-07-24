@@ -37,14 +37,23 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
+import { getDicomTags, anonymizeDicom } from "./dicom/main";
+
+import { FileDetailsModal } from "./FileDetailsModal";
+import { set } from "zod";
+
 export type FileDict = {
     id: number;
-    status: "not anonymized" | "anonymized";
+    status: "not anonymized" | "anonymized 🛡️" | "Loading";
     root_path: string;
     file_name: string;
 };
 
-export const getColumns = (selectedFiles: FileDict[], handleDeleteRow: (id: number) => void) => {
+export const getColumns = (
+    selectedFiles: FileDict[],
+    handleDeleteRow: (id: number) => void,
+    handleShowDetailsModal: (root_path: string, file_path: string) => void
+) => {
     const columns: ColumnDef<FileDict>[] = [
         {
             id: "select",
@@ -115,6 +124,16 @@ export const getColumns = (selectedFiles: FileDict[], handleDeleteRow: (id: numb
                             <DropdownMenuItem onClick={() => handleDeleteRow(row.original.id)}>
                                 Remove file
                             </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    handleShowDetailsModal(
+                                        row.original.root_path,
+                                        row.original.file_name
+                                    )
+                                }
+                            >
+                                Show file details
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 );
@@ -125,27 +144,86 @@ export const getColumns = (selectedFiles: FileDict[], handleDeleteRow: (id: numb
     return columns;
 };
 
-export default function FileTable({
-    selectedFiles = [],
+export function FileTable({
+    selectedFiles,
     handleDeleteRow,
     pageIndex,
     handlePageChange,
 }: {
-    selectedFiles: FileDict[];
+    selectedFiles: any;
     handleDeleteRow: (id: number) => void;
     pageIndex: number;
     handlePageChange: (pageIndex: number) => void;
 }) {
+    const [dicomTags, setDicomTags] = useState({});
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const [data, setData] = useState<FileDict[]>(selectedFiles);
-    console.log("Index", pageIndex);
-    const columns = getColumns(data, (id: number) => {
-        setData((prevData) => prevData.filter((file) => file.id !== id));
-        handleDeleteRow(id);
-    });
+
+    async function handleShowDetailsModal(root_path: string, file_name: string) {
+        const results = await getDicomTags(root_path, file_name);
+        setDicomTags(results);
+    }
+
+    function handleOnCLoseModal() {
+        setDicomTags({});
+    }
+
+    async function handleAnonymize() {
+        const updatedData = data.map((file) => {
+            if (
+                table
+                    .getFilteredSelectedRowModel()
+                    .rows.some(
+                        (row) => row.original.id === file.id && file.status !== "anonymized 🛡️"
+                    )
+            ) {
+                return {
+                    ...file,
+                    status: "Loading" as const,
+                };
+            }
+            return file;
+        });
+
+        setData(updatedData);
+
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        const selectedPath = await window.electron.openDirectoryPicker();
+
+        for (let i = 0; i < updatedData.length; i++) {
+            const file = updatedData[i];
+            if (file.status === "Loading") {
+                const updatedFile = {
+                    ...file,
+                    status: "anonymized 🛡️" as const,
+                };
+
+                await anonymizeDicom(file.root_path, file.file_name, selectedPath);
+
+                const newData = [
+                    ...updatedData.slice(0, i),
+                    updatedFile,
+                    ...updatedData.slice(i + 1),
+                ];
+
+                setData(newData);
+                updatedData[i] = updatedFile;
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+            }
+        }
+    }
+
+    const columns = getColumns(
+        data,
+        (id: number) => {
+            setData((prevData) => prevData.filter((file) => file.id !== id));
+            handleDeleteRow(id);
+        },
+        handleShowDetailsModal
+    );
 
     const table = useReactTable({
         data,
@@ -171,9 +249,12 @@ export default function FileTable({
         onPaginationChange: (updater) => {
             const newState =
                 typeof updater === "function" ? updater(table.getState().pagination) : updater;
-            console.log(table.getState());
-            if (newState.pageIndex === 0 && table.getState().pagination.pageIndex !== 0) {
-                console.log(table.getState().pagination.pageIndex, table.getPageCount());
+
+            if (newState.pageIndex === 0 && table.getState().pagination.pageIndex === 1) {
+                handlePageChange(newState.pageIndex);
+            }
+
+            if (newState.pageIndex === 0 && table.getState().pagination.pageIndex > 1) {
                 if (table.getState().pagination.pageIndex + 1 > table.getPageCount()) {
                     handlePageChange(table.getPageCount() - 1);
                 } else {
@@ -196,6 +277,9 @@ export default function FileTable({
                     }
                     className="max-w-sm"
                 />
+                <Button variant="outline" size="sm" onClick={() => handleAnonymize()}>
+                    Anonymize the selected files
+                </Button>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
@@ -270,11 +354,13 @@ export default function FileTable({
                     </TableBody>
                 </Table>
             </div>
+
             <div className="flex items-center justify-end space-x-2 py-4">
                 <div className="flex-1 text-sm text-muted-foreground">
                     {table.getFilteredSelectedRowModel().rows.length} of{" "}
                     {table.getFilteredRowModel().rows.length} row(s) selected.
                 </div>
+
                 <div className="space-x-2">
                     <Button
                         variant="outline"
@@ -297,6 +383,9 @@ export default function FileTable({
                     </Button>
                 </div>
             </div>
+            {Object.keys(dicomTags).length > 0 && (
+                <FileDetailsModal dicomTags={dicomTags} handleOnCLoseModal={handleOnCLoseModal} />
+            )}
         </div>
     );
 }

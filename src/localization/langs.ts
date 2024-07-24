@@ -6,9 +6,9 @@ export default [
         nativeName: "English",
         prefix: "🇺🇸",
     },
-    {
-        key: "ro",
-        nativeName: "Română",
-        prefix: "🇷🇴",
-    },
+    // {
+    //     key: "ro",
+    //     nativeName: "Română",
+    //     prefix: "🇷🇴",
+    // },
 ] satisfies Language[];

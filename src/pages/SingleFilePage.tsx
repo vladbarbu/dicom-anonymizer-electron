@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import LangToggle from "@/components/LangToggle";
 import { FilePlus } from "lucide-react";
-import FileTable from "../components/FileTable";
-
+import { FileTable } from "@/components/FileTable";
 export default function SingleFilePage() {
     const { t } = useTranslation();
     interface FileDict {
@@ -18,7 +17,6 @@ export default function SingleFilePage() {
     const [pageIndex, setPageIndex] = useState(0);
 
     const handlePageChange = (newPageIndex: number) => {
-        console.log("New page index:", newPageIndex);
         setPageIndex(newPageIndex);
     };
 

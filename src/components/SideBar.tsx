@@ -33,7 +33,7 @@ export default function SideBar({ selectedPage, setSelectedPage }: SideBarProps)
                 </Button>
             </div>
             <div className="flex w-full flex-col">
-                <SettingsDrawer selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
+                <SettingsDrawer selectedPage={selectedPage} />
             </div>
         </div>
     );

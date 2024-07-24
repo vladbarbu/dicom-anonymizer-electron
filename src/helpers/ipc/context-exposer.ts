@@ -1,6 +1,9 @@
+import { writeFile } from "fs";
 import { exposeThemeContext } from "./theme/theme-context";
 import { exposeWindowContext } from "./window/window-context";
 import { contextBridge, ipcRenderer } from "electron";
+const path = require("path");
+const fs = require("fs").promises;
 
 export default function exposeContexts() {
     exposeWindowContext();
@@ -15,5 +18,12 @@ contextBridge.exposeInMainWorld("electron", {
     openFilePicker: async (restrictExtensions: boolean) => {
         const files = await ipcRenderer.invoke("open-file-picker", restrictExtensions);
         return files;
+    },
+    path: {
+        join: (...args: string[]) => path.join(...args),
+    },
+    fs: {
+        readFile: (filePath: string) => fs.readFile(filePath),
+        writeFile: (filePath: string, data: string) => fs.writeFile(filePath, data),
     },
 });
