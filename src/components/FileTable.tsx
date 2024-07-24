@@ -13,7 +13,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown, MoreHorizontal, LoaderIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -36,6 +36,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { Progress } from "@/components/ui/progress";
 
 import { getDicomTags, anonymizeDicom } from "./dicom/main";
 
@@ -80,7 +81,15 @@ export const getColumns = (
         {
             accessorKey: "status",
             header: "Status",
-            cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
+            cell: ({ row }) => (
+                <div className="capitalize">
+                    {row.getValue("status") === "Loading" ? (
+                        <LoaderIcon className="animate-spin" />
+                    ) : (
+                        row.getValue("status")
+                    )}
+                </div>
+            ),
         },
         {
             accessorKey: "root_path",
@@ -161,7 +170,8 @@ export function FileTable({
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const [data, setData] = useState<FileDict[]>(selectedFiles);
-
+    const [isLoading, setIsLoading] = useState(false);
+    const [progress, setProgress] = useState(0);
     async function handleShowDetailsModal(root_path: string, file_name: string) {
         const results = await getDicomTags(root_path, file_name);
         setDicomTags(results);
@@ -172,6 +182,8 @@ export function FileTable({
     }
 
     async function handleAnonymize() {
+        setIsLoading(true);
+        setProgress(0);
         const updatedData = data.map((file) => {
             if (
                 table
@@ -190,7 +202,6 @@ export function FileTable({
 
         setData(updatedData);
 
-        // await new Promise((resolve) => setTimeout(resolve, 2000));
         const selectedPath = await window.electron.openDirectoryPicker();
 
         for (let i = 0; i < updatedData.length; i++) {
@@ -211,9 +222,12 @@ export function FileTable({
 
                 setData(newData);
                 updatedData[i] = updatedFile;
-                // await new Promise((resolve) => setTimeout(resolve, 2000));
+                const progress = ((i + 1) / updatedData.length) * 100;
+                setProgress(progress);
             }
         }
+        setProgress(100);
+        setIsLoading(false);
     }
 
     const columns = getColumns(
@@ -277,9 +291,24 @@ export function FileTable({
                     }
                     className="max-w-sm"
                 />
-                <Button variant="outline" size="sm" onClick={() => handleAnonymize()}>
-                    Anonymize the selected files
-                </Button>
+                {table.getFilteredSelectedRowModel().rows.length > 0 && (
+                    <div className="pl-2">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-10"
+                            onClick={() => handleAnonymize()}
+                        >
+                            Anonymize the selected files
+                        </Button>
+                    </div>
+                )}
+                {isLoading && (
+                    <div className="w-[60%] pl-2">
+                        <Progress value={progress} />
+                    </div>
+                )}
+                {progress === 100 && <div className="pl-2">Done</div>}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">

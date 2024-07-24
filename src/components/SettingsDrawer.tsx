@@ -20,20 +20,23 @@ interface SettingsDrawerProps {
 
 export default function SettingsDrawer({ selectedPage }: SettingsDrawerProps) {
     const { t } = useTranslation();
-    const openAnonymizationOptions = t("settings.open_checkbox_options", {
-        returnObjects: true,
-    }) as string[];
-    const closedAnonymizationOptions = t("settings.close_checkbox_options", {
-        returnObjects: true,
-    }) as string[];
 
     const [outputDirectory, setOutputDirectory] = useState<string | null>(null);
     const [anonymizeOptions, setAnonymizeOptions] = useState<any>({});
+    const path = window.electron.path;
+    let json_file_path;
+    const __dirname = "src";
+
+    if (process.env.NODE_ENV === "development") {
+        json_file_path = path.join(__dirname, "settings.json");
+    } else {
+        json_file_path = path.join(process.resourcesPath, "settings.json");
+    }
+
     const handleDirectoryPicker = async () => {
         const directory = await window.electron.openDirectoryPicker();
         setOutputDirectory(directory);
     };
-    const json_file_path = "src/settings.json";
 
     const getSettingsData = async () => {
         const settingsData = await readJsonFile(json_file_path);

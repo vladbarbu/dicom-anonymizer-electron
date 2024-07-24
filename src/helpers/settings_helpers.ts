@@ -13,7 +13,6 @@ export async function readJsonFile(file_path: string): Promise<any> {
 
 export async function modifyJsonFile(filePath: string, key: string, newValue: any): Promise<void> {
     const fs = window.electron.fs;
-    const path = window.electron.path;
     try {
         const jsonData = await fs.readFile(filePath, "utf-8");
         const jsonString = new TextDecoder("utf-8").decode(jsonData);

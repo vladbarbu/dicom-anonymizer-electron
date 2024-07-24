@@ -51,7 +51,7 @@
       "tagName": "AccessionNumber"
     },
     "StudyId": {
-      "enabled": true,
+      "enabled": false,
       "toggleable": true,
       "label": "Study ID",
       "tag": "x00200010",
@@ -65,7 +65,7 @@
       "tagName": "StudyDate"
     },
     "StudyTime": {
-      "enabled": true,
+      "enabled": false,
       "toggleable": true,
       "label": "Study Time",
       "tag": "x00080030",
