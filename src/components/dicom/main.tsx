@@ -2,12 +2,12 @@ import dicomParser from "dicom-parser";
 import { readJsonFile } from "@/helpers/settings_helpers";
 const path = window.electron.path;
 let json_file_path;
-const __dirname = "src/extraResources";
+const dirname = "src/extraResources";
 
 if (process.env.NODE_ENV === "development") {
-    json_file_path = path.join(__dirname, "settings.json");
+    json_file_path = path.join(dirname, "settings.json");
 } else {
-    json_file_path = path.join(process.resourcesPath, "settings.json");
+    json_file_path = path.join("resources/extraResources", "settings.json");
 }
 
 export const getDicomTags = async (filePath: string, fileName: string) => {

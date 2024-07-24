@@ -25,12 +25,13 @@ export default function SettingsDrawer({ selectedPage }: SettingsDrawerProps) {
     const [anonymizeOptions, setAnonymizeOptions] = useState<any>({});
     const path = window.electron.path;
     let json_file_path;
-    const __dirname = "src/extraResources";
+    const dirname = "src/extraResources";
 
     if (process.env.NODE_ENV === "development") {
-        json_file_path = path.join(__dirname, "settings.json");
+        json_file_path = path.join(dirname, "settings.json");
+        console.log(process.env.NODE_ENV);
     } else {
-        json_file_path = path.join(process.resourcesPath, "settings.json");
+        json_file_path = path.join("resources/extraResources", "settings.json");
     }
 
     const handleDirectoryPicker = async () => {
