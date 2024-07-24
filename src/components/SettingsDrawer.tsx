@@ -25,7 +25,7 @@ export default function SettingsDrawer({ selectedPage }: SettingsDrawerProps) {
     const [anonymizeOptions, setAnonymizeOptions] = useState<any>({});
     const path = window.electron.path;
     let json_file_path;
-    const __dirname = "src";
+    const __dirname = "src/extraResources";
 
     if (process.env.NODE_ENV === "development") {
         json_file_path = path.join(__dirname, "settings.json");
