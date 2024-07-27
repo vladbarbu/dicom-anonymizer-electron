@@ -16,7 +16,7 @@
       "tagName": "PatientID"
     },
     "PatientBirthDate": {
-      "enabled": true,
+      "enabled": false,
       "toggleable": true,
       "label": "Patient's Birth Date",
       "tag": "x00100030",
@@ -58,7 +58,7 @@
       "tagName": "StudyId"
     },
     "StudyDate": {
-      "enabled": true,
+      "enabled": false,
       "toggleable": true,
       "label": "Study Date",
       "tag": "x00080020",

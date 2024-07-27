@@ -63,7 +63,7 @@ export default function SingleFilePage() {
 
     return (
         <div
-            className={`relative  flex  h-full w-full flex-col rounded-t-xl border-2 ${selectedFiles.length > 0 ? "h-fit border-solid bg-secondary/60" : "h-full border-dashed"} border-secondary p-4  lg:col-span-2`}
+            className={`relative  flex  h-full w-full flex-col rounded-xl border-2 ${selectedFiles.length > 0 ? "h-fit border-solid bg-secondary/60" : "h-full border-dashed"} border-secondary p-4  lg:col-span-2`}
         >
             {selectedFiles.length > 0 ? (
                 <div>

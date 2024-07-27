@@ -66,7 +66,9 @@ export function SideBar({ isDarkMode }: { isDarkMode: boolean }) {
             )}
         >
             <Sidebar open={open} setOpen={setOpen}>
-                <SidebarBody className="justify-between gap-10">
+                <SidebarBody
+                    className={`justify-between gap-10 ${selectedPage === "home" ? "border" : ""}`}
+                >
                     <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
                         <div className="mt-8 flex flex-col gap-2">
                             {links.map((link, idx) => (
@@ -90,7 +92,7 @@ export function SideBar({ isDarkMode }: { isDarkMode: boolean }) {
                 <div className="w-full rounded-tl-2xl bg-background">
                     <DragWindowRegion isDarkMode={isDarkMode} />
                 </div>
-                <div className="flex flex-grow items-center justify-center">
+                <div className="flex flex-grow items-center justify-center p-2">
                     <PageSwitch
                         selectedPage={selectedPage}
                         isLoading={isLoading}
