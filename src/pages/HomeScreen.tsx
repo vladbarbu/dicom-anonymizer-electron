@@ -11,7 +11,7 @@ export function FlipWordsDemo() {
 
     return (
         <div className="flex w-full flex-col items-center justify-center px-4">
-            <h1 className=" relative z-20 mx-auto text-center text-3xl font-bold text-neutral-500 dark:text-neutral-400 md:text-5xl xl:text-6xl">
+            <h1 className=" relative z-20 mx-auto text-center text-3xl font-normal text-neutral-500 dark:text-neutral-400 md:text-5xl xl:text-6xl">
                 {title}
                 <FlipWords words={words} /> <br />
                 {subtitle}

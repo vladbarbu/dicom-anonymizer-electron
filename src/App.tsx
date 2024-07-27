@@ -16,9 +16,10 @@ export default function App() {
     }, []);
 
     return (
-        <BaseLayout>
-            <HomePage />
-        </BaseLayout>
+        // <BaseLayout>
+        //     <HomePage />
+        // </BaseLayout>
+        <HomePage />
     );
 }
 
