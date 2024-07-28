@@ -1,5 +1,5 @@
 {
-  "theme": "light",
+  "theme": "dark",
   "anonymize": {
     "PatientName": {
       "enabled": true,
@@ -16,7 +16,7 @@
       "tagName": "PatientID"
     },
     "PatientBirthDate": {
-      "enabled": false,
+      "enabled": true,
       "toggleable": true,
       "label": "Patient's Birth Date",
       "tag": "x00100030",
@@ -58,7 +58,7 @@
       "tagName": "StudyId"
     },
     "StudyDate": {
-      "enabled": false,
+      "enabled": true,
       "toggleable": true,
       "label": "Study Date",
       "tag": "x00080020",
