@@ -7,9 +7,11 @@ import SettingsPage from "./SettingsPage";
 import { FlipWordsDemo } from "./HomeScreen";
 interface PageSwitchProps {
     selectedPage: string;
+    isLoading: boolean;
+    setIsLoading: (loading: boolean) => void;
 }
 
-export default function PageSwitch({ selectedPage }: PageSwitchProps) {
+export default function PageSwitch({ selectedPage, isLoading, setIsLoading }: PageSwitchProps) {
     const { t } = useTranslation();
     const [lastSelectedPage, setLastSelectedPage] = useState<"single" | "directory" | "home">(
         "single"
@@ -25,11 +27,15 @@ export default function PageSwitch({ selectedPage }: PageSwitchProps) {
         <>
             {selectedPage === "home" && <FlipWordsDemo />}
             {selectedPage === "single" && <SingleFilePage />}
-            {selectedPage === "directory" && <DirectoryPage />}
+            {selectedPage === "directory" && (
+                <DirectoryPage isLoading={isLoading} setIsLoading={setIsLoading} />
+            )}
             {selectedPage === "settings" && (
                 <>
                     {lastSelectedPage === "single" && <SingleFilePage />}
-                    {lastSelectedPage === "directory" && <DirectoryPage />}
+                    {lastSelectedPage === "directory" && (
+                        <DirectoryPage isLoading={isLoading} setIsLoading={setIsLoading} />
+                    )}
                     {lastSelectedPage === "home" && <FlipWordsDemo />}
                 </>
             )}

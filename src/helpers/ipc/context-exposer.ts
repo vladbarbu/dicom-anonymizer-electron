@@ -1,4 +1,4 @@
-import { writeFile } from "fs";
+import { stat, writeFile } from "fs";
 import { exposeThemeContext } from "./theme/theme-context";
 import { exposeWindowContext } from "./window/window-context";
 import { contextBridge, ipcRenderer } from "electron";
@@ -27,5 +27,11 @@ contextBridge.exposeInMainWorld("electron", {
         writeFile: (filePath: string, data: string) => fs.writeFile(filePath, data),
         readFileSync: (filePath: string) => fs.readFileSync(filePath),
         writeFileSync: (filePath: string, data: string) => fs.writeFileSync(filePath, data),
+        readdir: (filePath: string) => fs.readdir(filePath),
+        stat: (filePath: string) => fs.stat(filePath),
+        isDirectory: async (filePath: string) => {
+            const stats = await fs.stat(filePath);
+            return stats.isDirectory();
+        },
     },
 });
