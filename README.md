@@ -23,5 +23,5 @@ npm run start
 ```
 
 Thanks to LuanRoger for providing a starting point -> https://github.com/LuanRoger/electron-shadcn
-
-
+Cornerstonejs for providing a way to parse and anonymize dicoms -> https://github.com/cornerstonejs/dicomParser
+Aceternity UI for some awesome components -> https://ui.aceternity.com
