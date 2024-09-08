@@ -12,6 +12,12 @@ if (process.env.NODE_ENV === "development") {
 
 export async function setThemeToDefault() {
     const jsonObject = await readJsonFile(json_file_path);
+    if (jsonObject.theme === "dark") {
+        updateDocumentTheme(true);
+    }
+    if (jsonObject.theme === "light") {
+        updateDocumentTheme(false);
+    }
     if (jsonObject.theme === "system") {
         const isDarkMode = await window.themeMode.system();
         if (isDarkMode) {
@@ -20,12 +26,6 @@ export async function setThemeToDefault() {
             await modifyJsonFile(json_file_path, "theme", "light");
         }
         updateDocumentTheme(isDarkMode);
-    } else {
-        if (jsonObject.theme === "dark") {
-            updateDocumentTheme(true);
-        } else {
-            updateDocumentTheme(false);
-        }
     }
 }
 
