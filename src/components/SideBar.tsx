@@ -35,16 +35,16 @@ export function SideBar({ isDarkMode }: { isDarkMode: boolean }) {
                     <IconFiles className="h-5 w-5 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
                 ),
             },
-            {
-                label: t("directory_button"),
-                value: "directory",
-                icon: (
-                    <IconFolder className="h-5 w-5 flex-shrink-0 text-primary dark:text-primary" />
-                ),
-                icon_selected: (
-                    <IconFolder className="h-5 w-5 flex-shrink-0 text-primary dark:text-neutral-200" />
-                ),
-            },
+            // {
+            //     label: t("directory_button"),
+            //     value: "directory",
+            //     icon: (
+            //         <IconFolder className="h-5 w-5 flex-shrink-0 text-primary dark:text-primary" />
+            //     ),
+            //     icon_selected: (
+            //         <IconFolder className="h-5 w-5 flex-shrink-0 text-primary dark:text-neutral-200" />
+            //     ),
+            // },
             {
                 label: "Settings",
                 value: "settings",
